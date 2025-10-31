@@ -1,6 +1,6 @@
 {
-  "name": "language-mapping",
-  "version": "1.0.0",
+  "name": "etmos-ai",
+  "version": "0.0.1",
   "description": "Visual graph-based representation of etymological connections between words across languages",
   "main": "server/dist/index.js",
   "scripts": {
