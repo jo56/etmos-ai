@@ -2,11 +2,7 @@
 
   <div align="center">
       <a href="https://etmos.pages.dev" target="_blank">
-          <img src="assets/etmos-preview-2.png" alt="etmos preview">
-      </a>
-      <br>
-      <a href="https://etmos.pages.dev" target="_blank">
-          <b>https://etmos.pages.dev</b>
+          <img src="assets/etmos-preview-4.png" alt="etmos preview">
       </a>
      </div>
     <br>
