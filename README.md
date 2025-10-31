@@ -1,4 +1,4 @@
-# etmos
+# etmos-ai
 
   <div align="center">
       <a href="https://etmos.pages.dev" target="_blank">
