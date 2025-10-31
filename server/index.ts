@@ -1,3 +1,8 @@
+import dotenv from 'dotenv';
+
+// Load environment variables from server/.env file
+dotenv.config();
+
 import Fastify, { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import cors from '@fastify/cors';
 import formbody from '@fastify/formbody';

@@ -11,7 +11,9 @@
      </div>
     <br>
     
-A visual, interactive graph-based application for exploring etymological connections between words across different languages. 
+A visual, interactive graph-based application for exploring etymological connections between words across different languages.
+
+Powered by AI for intelligent extraction of etymological relationships from etymonline.com, providing more accurate and comprehensive word connections! 
  
 
 
@@ -31,6 +33,11 @@ A visual, interactive graph-based application for exploring etymological connect
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js 18+ and npm
+- OpenAI API key (for AI-powered etymology extraction)
+
 ### Installation
 
 1. Clone the repository:
@@ -43,6 +50,33 @@ cd etmos
 ```bash
 npm run install:all
 ```
+
+3. Configure your API keys:
+
+Copy the example environment file:
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and add your OpenAI API key:
+```env
+# AI Configuration
+AI_PROVIDER=openai
+AI_API_KEY=your-openai-api-key-here
+AI_MODEL=gpt-4o-mini
+
+# Server Configuration
+PORT=54330
+FRONTEND_URL=http://localhost:5173
+```
+
+**Getting an OpenAI API Key:**
+- Sign up at [OpenAI Platform](https://platform.openai.com/)
+- Navigate to [API Keys](https://platform.openai.com/api-keys)
+- Create a new secret key
+- Add credits to your account (pay-as-you-go)
+
+**Cost Estimate:** Using `gpt-4o-mini` (default), typical etymology extraction costs ~$0.01-0.02 per 100 words searched.
 
 ### Development
 
@@ -94,6 +128,29 @@ npm run build
 npm run preview  # Serves on http://localhost:4173
 ```
 
+## How It Works
+
+### AI-Powered Etymology Extraction
+
+Unlike traditional regex-based parsing, etmos uses AI to understand the semantic context of etymological text from etymonline.com:
+
+1. **Scraping**: Fetches etymology data from etymonline.com
+2. **AI Processing**: Sends cleaned HTML to OpenAI with expert prompts
+3. **Smart Extraction**: AI identifies:
+   - Proto-Indo-European roots (PIE)
+   - Ancient language forms (Latin, Greek, Sanskrit, etc.)
+   - Historical language stages (Old English, Middle French, etc.)
+   - Cognates and related words
+   - Borrowings and derivatives
+4. **Graph Building**: Connections are visualized in an interactive graph
+5. **Priority Ranking**: Etymonline (AI-powered) → Wiktionary → Dictionary API
+
+### Data Sources Priority
+
+1. **Etymonline.com** (Primary - AI-powered) - Highest quality etymological data
+2. **Wiktionary** (Secondary) - Community-contributed etymology
+3. **Dictionary API** (Tertiary) - Basic word origins
+
 ## Usage
 
 1. **Search**: Enter a word in the search bar to create an initial graph
@@ -113,13 +170,45 @@ The backend provides the following endpoints:
 
 ## Environment Variables
 
-Create a `.env` file in the server directory:
+Create a `.env` file in the root directory:
 
 ```env
+# AI Configuration
+AI_PROVIDER=openai
+AI_API_KEY=your-openai-api-key-here
+AI_MODEL=gpt-4o-mini
+
+# Server Configuration
 PORT=54330
 FRONTEND_URL=http://localhost:5173
 NODE_ENV=development
 ```
+
+### AI Configuration Options
+
+- `AI_PROVIDER`: Choose AI provider (currently supports: `openai`)
+- `AI_API_KEY`: Your OpenAI API key
+- `AI_MODEL`: Model selection (affects cost and quality)
+  - Options: `gpt-4o`, `gpt-4o-mini` (recommended), `gpt-4-turbo`
+
+## Troubleshooting
+
+### "AI service not available" errors
+
+**Problem:** Backend can't access OpenAI API
+
+**Solutions:**
+1. Verify `.env` file exists in root directory
+2. Check `AI_API_KEY` is set correctly in `.env`
+3. Ensure you have credits in your OpenAI account
+4. Restart the development server after changing `.env`
+
+### No etymology data appearing
+
+**Possible causes:**
+1. No API key configured (check console for warnings)
+2. Network issues connecting to etymonline.com
+3. Rate limiting from etymonline.com (wait a few minutes)
 
 ## License
 
