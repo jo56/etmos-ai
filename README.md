@@ -55,10 +55,10 @@ npm run install:all
 
 Copy the example environment file:
 ```bash
-cp .env.example .env
+cp server/.env.example server/.env
 ```
 
-Edit `.env` and add your OpenAI API key:
+Edit `server/.env` and add your OpenAI API key:
 ```env
 # AI Configuration
 AI_PROVIDER=openai
@@ -170,7 +170,7 @@ The backend provides the following endpoints:
 
 ## Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `server/.env` file in the server directory:
 
 ```env
 # AI Configuration
@@ -198,15 +198,15 @@ NODE_ENV=development
 **Problem:** Backend can't access OpenAI API
 
 **Solutions:**
-1. Verify `.env` file exists in root directory
-2. Check `AI_API_KEY` is set correctly in `.env`
+1. Verify `server/.env` file exists in server directory
+2. Check `AI_API_KEY` is set correctly in `server/.env`
 3. Ensure you have credits in your OpenAI account
 4. Restart the development server after changing `.env`
 
 ### No etymology data appearing
 
 **Possible causes:**
-1. No API key configured (check console for warnings)
+1. No API key configured in `server/.env` (check console for warnings)
 2. Network issues connecting to etymonline.com
 3. Rate limiting from etymonline.com (wait a few minutes)
 
