@@ -80,53 +80,6 @@ function LanguageMappingApp() {
     return false;
   };
 
-  // Helper function to check if a word is malformed/corrupted
-  const isMalformedWord = (text: string, language: string) => {
-    // Filter out obviously corrupted words
-    if (text.length < 2) return true;
-
-    // Check for repeated characters that suggest corruption
-    if (/(.)\1{2,}/.test(text)) return true; // 3+ repeated chars like "testss"
-
-    // Check for impossible consonant clusters in known languages
-    if (language === 'en' && /[bcdfghjklmnpqrstvwxyz]{4,}/.test(text)) return true;
-    if (language === 'de' && /[bcdfghjklmnpqrstvwxyz]{5,}/.test(text)) return true;
-
-    // Check for words that are just character fragments
-    if (text.length < 4 && /^[bcdfghjklmnpqrstvwxyz]+$/.test(text)) return true;
-
-    // Specific corrupted words we've seen (expanding list)
-    const knownCorrupted = [
-      'desd', 'desds', 'tesd', 'tesds', 'desded', 'testeds', 'testeded',
-      'tesded', 'testesed', 'tesdeds', 'tesdsd', 'desdeds'
-    ];
-    if (knownCorrupted.includes(text.toLowerCase())) return true;
-
-    // Check for impossible endings in different languages
-    if (language === 'de' && text.endsWith('sd')) return true; // German doesn't end in 'sd'
-    if (language === 'es' && text.endsWith('sd')) return true; // Spanish doesn't end in 'sd'
-    if (language === 'fr' && text.endsWith('sd')) return true; // French doesn't end in 'sd'
-
-    // Check for double past tense patterns (common corruption)
-    if (language === 'en' && /ed.*ed$/.test(text)) return true; // like "testeded"
-
-    // Check for double plural patterns
-    if (language === 'en' && /s.*s$/.test(text) && text.length > 6) return true; // like "testss"
-
-    // Filter out words that are clearly malformed derivations
-    if (language === 'en') {
-      // Double suffixes are usually incorrect
-      if (text.includes('eded') || text.includes('inging') || text.includes('eded')) return true;
-
-      // Invalid suffix combinations
-      if (text.endsWith('eds') && !['beds', 'reds', 'feds', 'weds'].includes(text.toLowerCase())) return true;
-    }
-
-    // Check for degraded words that mix morphemes incorrectly
-    if (text.toLowerCase().includes('tesd') || text.toLowerCase().includes('desd')) return true;
-
-    return false;
-  };
 
   // Helper function to check for self-referential loops
   const wouldCreateLoop = (expandingNodeId: string, newNeighbors: any[], currentNodes: Map<string, any>) => {
@@ -281,11 +234,7 @@ function LanguageMappingApp() {
         data.neighbors?.forEach((nodeData: any) => {
           const word = nodeData.data.word;
 
-          if (isMalformedWord(word.text, word.language)) {
-            logger.debug('Filtered malformed word:', word.text, '(' + word.language + ')');
-            duplicateCount++; // Count as duplicate to track filtering
-            return;
-          }
+          
 
           if (!wordExists(word.text, word.language, newNodes)) {
             newNodes.set(nodeData.id, {
@@ -413,11 +362,7 @@ function LanguageMappingApp() {
       initialGraphQuery.data.neighbors.forEach((node: any) => {
         const word = node.data.word;
 
-        if (isMalformedWord(word.text, word.language)) {
-          logger.debug('Filtered malformed word in initial graph:', word.text, '(' + word.language + ')');
-          duplicateNeighbors++; // Count as duplicate to track filtering
-          return;
-        }
+        
 
         if (!wordExists(word.text, word.language, nodes)) {
           nodes.set(node.id, {
@@ -524,14 +469,7 @@ function LanguageMappingApp() {
     }
 
     // Prevent expansion of nodes that are themselves malformed
-    if (isMalformedWord(word.text, word.language)) {
-      logger.debug('Preventing expansion of malformed word:', word.text);
-      showNotification(
-        `Cannot expand corrupted word "${word.text}"`,
-        'warning'
-      );
-      return;
-    }
+    
 
     // If node is not expanded and not currently expanding, expand it
     if (!node.data.expanded && !node.data.expanding) {
