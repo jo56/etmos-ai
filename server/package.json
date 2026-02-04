@@ -17,7 +17,7 @@
     "@types/node": "^24.5.2",
     "axios": "^1.6.0",
     "dotenv": "^16.4.5",
-    "fastify": "^5.6.1",
+    "fastify": "^5.7.3",
     "node-cache": "^5.1.2",
     "openai": "^4.76.1",
     "ts-node": "^10.9.1",
